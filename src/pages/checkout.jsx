@@ -30,7 +30,7 @@ export const Checkout = () => {
         variant="primary"
         size="lg"
         onClick={() => navigate("/")}
-        className="px-4" // Un poco más de padding horizontal
+        className="px-4" 
       >
         Volver al inicio
       </Button>

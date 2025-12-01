@@ -1,10 +1,11 @@
 import { createContext, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
-import { API_URL_USERS } from "../config/constants";
-
+import { API_URL_RESGISTER, API_URL_USERS } from "../config/constants";
+import { getAllUsers, userExist, userNotExist } from "../utils/authHelpers";
 export const AuthContext = createContext();
 const API_URL = API_URL_USERS;
+const API_URL_REGISTER = API_URL_RESGISTER
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -18,18 +19,13 @@ export const AuthProvider = ({ children }) => {
   const login = async (credentials) => {
     setIsLoading(true);
     try {
-      //obtener todos los usuarios
-      const response = await fetch(API_URL);
-      if (!response.ok) throw new Error("Error en la petición");
-      const data = await response.json();
+      // obtener usuarios db
+      const allUsers = await getAllUsers(API_URL);
 
-      //filtrar usuario por email
-      const userData = data.find(
-        (user) => user.email === credentials.email.trim().toLowerCase()
-      );
+      //verificar usuario por email
+      const userData = userExist(allUsers, credentials);
 
       //verificar usuario y contraseña
-      if (!userData) throw new Error("Usuario no encontrado");
       if (userData.password !== credentials.password)
         throw new Error("Contraseña incorrecta");
 
@@ -77,16 +73,11 @@ export const AuthProvider = ({ children }) => {
   // -------------------------------------------------------------------//
   const register = async (credentials) => {
     try {
-      //verificar si usuario existe
-      const response = await fetch(API_URL);
-      if (!response.ok) throw new Error("Error en la petición");
-      const data = await response.json();
+      // obtener usuarios db
+      const allUsers = await getAllUsers(API_URL);
 
-      //verificar usuario por email
-      const userExists = data.find(
-        (user) => user.email === credentials.email.trim().toLowerCase()
-      );
-      if (userExists) throw new Error("El email ya se encuentra registrado");
+     //verificar usuario por email
+      const userData = userNotExist(allUsers, credentials);
 
       // datos de usuario nuevo
       const newUser = {
@@ -96,7 +87,7 @@ export const AuthProvider = ({ children }) => {
       };
 
       //crear usuario en db
-      const postResponse = await fetch(API_URL, {
+      const postResponse = await fetch(API_URL_RESGISTER, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newUser),
@@ -106,7 +97,7 @@ export const AuthProvider = ({ children }) => {
       if (!postResponse.ok)
         throw new Error("Error al crear el usuario, intente nuevamente");
 
-      return { success: true, user: response.data };
+      return { success: true, user: postResponse.data };
     } catch (error) {
       return { success: false, message: error.message };
     }
@@ -162,17 +153,14 @@ export const AuthProvider = ({ children }) => {
     verifyAuth();
   }, [location.pathname]);
 
-  
   // -------------------------------------------------------------------//
   const updateUser = async (userFormData) => {
     try {
-      // verificar si email existe
-      const usersData = await fetch(API_URL);
-      if (!usersData.ok) throw new Error("Error en la petición");
-      const usersDataObject = await usersData.json();
+      // obtener usuarios db
+      const allUsers = await getAllUsers(API_URL_USERS);
 
       //verificar usuario por email
-      const userExists = usersDataObject.find(
+      const userExists = allUsers.find(
         (user) =>
           user.email === userFormData.email.trim().toLowerCase() &&
           user.id !== userFormData.id

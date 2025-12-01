@@ -10,7 +10,7 @@ export default function Footer() {
               <div className="d-flex align-items-center justify-content-center justify-content-md-start d-none d-md-block">
                 <i className="bi bi-cart3 fs-4 text-primary me-2"></i>
                 <span className="fs-5 fw-bold">Carrito de Compras</span>
-              <p className="mt-2 small">Tu tienda online favorita</p>
+                <p className="mt-2 small">Tu tienda online favorita</p>
               </div>
             </Col>
 
@@ -22,7 +22,7 @@ export default function Footer() {
                 <a href="#" className="text-white" title="Contacto">
                   <i className="bi bi-envelope fs-5"></i>
                 </a>
-                <a href="#" className="text-white" title="Contacto">
+                <a href="#" className="text-white" title="Facebook">
                   <i className="bi bi-facebook fs-5"></i>
                 </a>
               </div>

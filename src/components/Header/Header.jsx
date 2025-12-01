@@ -1,12 +1,11 @@
 import { Button, Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { useCart } from "../../hooks/useCart";
 import logoFed from "../../assets/logoFed.png";
 import styles from "./Header.module.css";
 
 function Header() {
-  const navigate = useNavigate();
   const { user, authorized, isLoading, logout } = useAuth();
   const { totalItems } = useCart();
 
@@ -49,7 +48,6 @@ function Header() {
         </div>
 
         <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
-          {/* Sección de usuario/carrito/login */}
           <Nav className="flex-column flex-lg-row align-items-end align-items-lg-center">
             {authorized ? (
               <>
@@ -81,7 +79,6 @@ function Header() {
                   id="user-dropdown"
                   align="end"
                   className="text-end"
-                  
                 >
                   <NavDropdown.Item>
                     <strong>Hola {user?.name || "Usuario"}</strong>

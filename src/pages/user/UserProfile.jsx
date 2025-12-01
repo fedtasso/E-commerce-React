@@ -12,19 +12,16 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from '../../hooks/useAuth';
 
 const UserProfile = () => {
+  const { user, deleteUser, updateUser } = useAuth();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
-  const { user, deleteUser, updateUser } = useAuth();
   const [passwordChecks, setPasswordChecks] = useState({
     hasLength: false,
     hasNumber: false,
     hasUppercase: false,
-  });
-  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
+  });  
   // Datos del usuario
   const [userData, setUserData] = useState({
     name: user?.name || "",
@@ -32,6 +29,9 @@ const UserProfile = () => {
     password: "",
     repeatPassword: "",
   });
+  const navigate = useNavigate();
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
 
   //actualizar usuario cuando haya cambios
   useEffect(() => {
@@ -62,6 +62,7 @@ const UserProfile = () => {
       });
     }
   };
+  
 
   // Manejar envio
   const handleSubmit = async (e) => {
@@ -99,7 +100,7 @@ const UserProfile = () => {
 
       setShowSuccessModal(true);
     } catch (error) {
-      console.log(error)
+      
       setError(error.message);
     } finally {
       setIsLoading(false);
