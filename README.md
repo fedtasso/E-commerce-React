@@ -4,8 +4,11 @@ Este proyecto consiste en la implementación de un e-commerce del lado del front
 
 ---
 
+### Backend en desarrollo en https://github.com/fedtasso/E-commerce-Backend-SpringBoot.git
+
 ## Deploy
     https://fedtasso-ecommerce.netlify.app/
+
 
 ## Objetivos
 
@@ -49,22 +52,6 @@ Estructura general:
 - CRUD de productos (admin)
 - Carrito de compras con persistencia
 - Filtro de productos
-
----
-
-##  Instalación
-
-1. Clonar el repositorio:
-   
-    git clone https://github.com/fedtasso/proyectoReactFedericoTasso/tree/main
-
-2. Instalar dependencias:
-
-    npm install
-
-3. Ejecutar la app:
-
-    npm run dev
 
 
 
